@@ -51,12 +51,12 @@ public class Member {
 		String password = passwordEncoder.encode(memberDTO.getPassword());
 		
 		Member member = Member.builder()
-							  .name(memberDTO.getName())
-							  .email(memberDTO.getEmail())
-							  .password(password)
-							  .address(memberDTO.getAddress())
-							  .role(Role.USER)
-							  .build();
+												  .name(memberDTO.getName())
+												  .email(memberDTO.getEmail())
+												  .password(password)
+												  .address(memberDTO.getAddress())
+												  .role(Role.USER)
+												  .build();
 		
 		return member;
 	}

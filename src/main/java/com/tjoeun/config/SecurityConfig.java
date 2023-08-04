@@ -17,23 +17,23 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http.formLogin()
-			.loginPage("/member/login")
-			.defaultSuccessUrl("/")
-			.usernameParameter("email")
-			.failureUrl("/member/login/error")
-			.and()
-			.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-			.logoutSuccessUrl("/");
+				.loginPage("/member/login")
+				.defaultSuccessUrl("/")
+				.usernameParameter("email")
+				.failureUrl("/member/login/error")
+				.and()
+				.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+				.logoutSuccessUrl("/");
 		
 		http.authorizeHttpRequests()
-			.mvcMatchers("/", "/member/**", "/item/**", "/test/**").permitAll()
-			.mvcMatchers("/css/**", "/js/**", "/images/**").permitAll()
-			.mvcMatchers("/admin/**").hasRole("ADMIN")
-			.anyRequest().authenticated();
+				.mvcMatchers("/", "/member/**", "/item/**", "/test/**").permitAll()
+				.mvcMatchers("/css/**", "/js/**", "/images/**").permitAll()
+				.mvcMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest().authenticated();
 		
 		http.exceptionHandling()
-			.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+				.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 		
 		return http.build();
 	}

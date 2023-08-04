@@ -72,8 +72,8 @@ public class MemberController {
 		return "member/memberLoginForm";
 	}
 	
-	@GetMapping("/logout")
-	public String logout() {
-		return "redirect:/";
-	}
+//	@GetMapping("/logout")
+//	public String logout() {
+//		return "redirect:/";
+//	}
 }
