@@ -103,9 +103,51 @@ Spring Security 적용하기
 
 
 
-
-
+로그인, 로그아웃 기능 구현
+	Spring Security 에서 UserDetailService 인터페이스를 implements 하는
+	클래스를 작성해서 로그인 기능을 구현
+	UserDetailService 인터페이스는 Database 에서 회원정보를 가져오는 역할을 함
+		loadUserByUsername() 메소드를 오버로딩해서 
+		회원정보를 조회하고 사용자의 정보와 권한을 갖는 
+		UserDetail 인터페이스를 반환함
+			ㄴ Spring Security 에서 회원의 정보를 담는 기능을 함
+				 UserDetail 인터페이스를 implements 하는 클래스(User)를 사용함
+														ㄴ 클래스(User)의 객체를 생성함
            
+
+연관 관계 매핑
+	(매핑된 Entity 를 조회할 때 지연로딩 방식과 즉시로딩 방식이 있음)
+	즉시로딩 - @OneToOne(fetch=FetchType.EAGER)
+		ㄴ @OneToOne, @ManyToOne 방식으로 매핑할 때 기본값
+		ㄴ Entity 를 조회할 때 해당 Entity 와 Mapping 된 Entity 를 한꺼번에 조회함  
+		ㄴ data 를 조회할 때 연관된 모든 객체의 데이터를 모두 다 한꺼번에 조회함
+	지연로딩 - @OneToMany(fetch=FetchType.LAZY)
+		ㄴ @OneToMany 방식으로 매핑할 때 기본값
+		ㄴ 필요한 시점에 연관된 객체(Entity) 의 data 를 불러옴
+
+연관 관계 매핑 종류
+	1) 1 : 1 (@OneToOne)
+	2) 1 : n (@OneToMany)
+	3) n : 1 (@ManyToOne)
+	4) n : n (@ManyToMany)
+	
+연관 관계 매핑 방향
+	1) 단방향
+	2) 양방향
+	
+	
+N : 1 Mapping
+	장바구니에는 고객이 구매하고자 하는 상품들을 담음
+	하나의 장바구니에는 여러개의 상품을 담을 수 있음
+	하나의 상품은 여러 장바구니에 담겨질 수 있음
+	
+	장바구니 Table - 장바구니 상품 Table - 상품 Table
+	
+	
+Orders 테이블과 Order_item 테이블 관계 매핑하기
+	orders 테이블(부모Table)의 order_id 컬럼(의 값)(reference key)을
+	order_item 테이블(자식Table)의 order_id 컬럼(foreign key)에서 사용하도록 설정
    
+   어떤 상품을 주문한지 알 수 있고 주문한 상품이 어떤 속해있는지 알 수 있음
    
                    

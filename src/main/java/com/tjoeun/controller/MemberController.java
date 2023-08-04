@@ -35,7 +35,7 @@ public class MemberController {
 	
 	@PostMapping("/new")
 	public String postMemberForm(@Valid MemberFormDTO memberFormDTO,
-															 BindingResult result, Model model) {
+								 BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			return "member/memberForm";
 		}
@@ -53,6 +53,27 @@ public class MemberController {
 			return "member/memberForm";
 		}
 		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "member/memberLoginForm";
+	}
+	
+//	@PostMapping("/login")
+//	public String login(Model model) {
+//		return "";
+//	}
+	
+	@GetMapping("/login/error")
+	public String loginError(Model model) {
+		model.addAttribute("loginErrorMessage", "이메일 또는 비밀번호를 확인해주세요.");
+		return "member/memberLoginForm";
+	}
+	
+	@GetMapping("/logout")
+	public String logout() {
 		return "redirect:/";
 	}
 }

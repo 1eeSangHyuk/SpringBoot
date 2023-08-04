@@ -48,14 +48,14 @@ public class Item {
 	// @Lob : 길이가 255 개 이상인 문자열을 저장할 수 있음
 	@Lob
 	@Column(nullable=false)
-  private String itemDetail;          // 상품 상세 설명	
+	private String itemDetail;          // 상품 상세 설명	
 	
 	@Enumerated(EnumType.STRING)				// Enum 을 멤버변수로 사용할 수 있도록 해 주는 어노테이션 
 	private ItemSellStatus itemSellStatus;	// type 설정 - EnumType.ORDINAL : 숫자, EnumType.STRING : 문자열 
 		
-  private LocalDateTime regTime;      // 등록 시간
+	private LocalDateTime regTime;      // 등록 시간
   
-  private LocalDateTime updateTime;   // 수정 시간
+	private LocalDateTime updateTime;   // 수정 시간
 }
 
 
