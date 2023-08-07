@@ -1,7 +1,5 @@
 package com.tjoeun.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity{
 	
 	@Id
 	@Column(name = "order_item_id")
@@ -21,7 +19,7 @@ public class OrderItem {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "orders_id")
-	private Orders order;
+	private Orders orders;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_id")
@@ -30,8 +28,4 @@ public class OrderItem {
 	private int orderPrice;
 	
 	private int count;
-	
-	private LocalDateTime regTime;
-	
-	private LocalDateTime updateTime; 
 }

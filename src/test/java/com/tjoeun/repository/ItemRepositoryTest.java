@@ -38,7 +38,7 @@ class ItemRepositoryTest {
 	public void createItemList() {
 		for(int i=1;i<=10;i++) {
 			Item item = new Item();
-			item.setItemNm("상품"+i);
+			item.setItemName("상품"+i);
 			item.setPrice(10000+i*100);
 			item.setItemDetail("상품상세설명"+i);
 			item.setItemSellStatus(ItemSellStatus.SELL);
@@ -53,7 +53,7 @@ class ItemRepositoryTest {
 	@DisplayName("상품명조회테스트")
 	public void findByItemNmtest() {
 		createItemList();
-		List<Item> itemList = itemRepository.findByItemNm("상품5");
+		List<Item> itemList = itemRepository.findByItemName("상품5");
 		for(Item item : itemList) {
 			System.out.println(item.toString());
 		}
@@ -63,7 +63,7 @@ class ItemRepositoryTest {
 	@DisplayName("상품명, 상품상세설명 or 테스트")
 	public void findByItemNmOrItemDetailTest() {
 		this.createItemList();
-		List<Item> itemList = itemRepository.findByItemNmOrItemDetail("상품1", "상품상세설명5");
+		List<Item> itemList = itemRepository.findByItemNameOrItemDetail("상품1", "상품상세설명5");
 		System.out.println("\n---------- ItemNm 이나 ItemDetail 에 해당하는 상품 가져오기 시작 ----------\n");
 		for (Item item : itemList) {
 			System.out.println(item.toString());
@@ -139,7 +139,7 @@ class ItemRepositoryTest {
 	public void createItemList2() {
 		for(int i=1;i<=5;i++) {
 			Item item = new Item();
-			item.setItemNm("상품"+i);
+			item.setItemName("상품"+i);
 			item.setPrice(10000+i*100);
 			item.setItemDetail("상품상세설명"+i);
 			item.setItemSellStatus(ItemSellStatus.SELL);
@@ -150,7 +150,7 @@ class ItemRepositoryTest {
 		}
 		for(int i=6;i<=10;i++) {
 			Item item = new Item();
-			item.setItemNm("상품"+i);
+			item.setItemName("상품"+i);
 			item.setPrice(10000+i*100);
 			item.setItemDetail("상품상세설명"+i);
 			item.setItemSellStatus(ItemSellStatus.SOLD_OUT);

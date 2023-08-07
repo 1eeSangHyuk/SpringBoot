@@ -29,7 +29,7 @@ public class Test2Controller {
 	@GetMapping("/t2")
 	public void t2(ItemDTO itemDTO) {
 		itemDTO.setItemDetail("상세설명");
-		itemDTO.setItemNm("상품1");
+		itemDTO.setItemName("상품1");
 		itemDTO.setPrice(3000);
 		itemDTO.setRegTime(LocalDateTime.now());
 	}
@@ -40,7 +40,7 @@ public class Test2Controller {
 		for(int i = 0; i < 10; i++) {
 			ItemDTO itemDTO = new ItemDTO();
 			itemDTO.setItemDetail("상세설명"+(i+1));
-			itemDTO.setItemNm("상품"+(i+1));
+			itemDTO.setItemName("상품"+(i+1));
 			itemDTO.setPrice(3000+100*(i+1));
 			itemDTO.setRegTime(LocalDateTime.now());
 			

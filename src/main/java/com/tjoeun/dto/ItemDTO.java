@@ -1,8 +1,6 @@
 package com.tjoeun.dto;
 
-import java.time.LocalDateTime;
-
-import com.tjoeun.constant.ItemSellStatus;
+import com.tjoeun.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,13 +15,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemDTO {
+public class ItemDTO extends BaseEntity{
 	private Long id;
-	private String itemNm;
+	private String itemName;
 	private int price;
 	private int stockNumber;
 	private String itemDetail;
 	private String itemSellStatus;
-  private LocalDateTime regTime;
-  private LocalDateTime updateTime;
 }

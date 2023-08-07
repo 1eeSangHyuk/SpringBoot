@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class CartItem {
+public class CartItem extends BaseEntity{
 	
 	@Id
 	@Column(name = "cart_item_id")

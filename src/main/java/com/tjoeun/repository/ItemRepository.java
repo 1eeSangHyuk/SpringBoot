@@ -13,9 +13,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 																				QuerydslPredicateExecutor<Item>{
   // findByItemNm() 메소드 <-- Query Method
 	// find(EntitiClass이름)By(멤버변수이름-DB의컬럼)
-	List<Item> findByItemNm(String ItemNm);
+	List<Item> findByItemName(String ItemName);
 		
-	List<Item> findByItemNmOrItemDetail(String ItemNm, String itemDetail);
+	List<Item> findByItemNameOrItemDetail(String ItemName, String itemDetail);
 	
 	// JPQL
 	@Query("select i from Item i where i.itemDetail like "
