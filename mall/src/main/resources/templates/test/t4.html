@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>t4 - if</title>
+</head>
+<body>
+	<h2>상품목록</h2>
+	<div>
+		<a th:href="@{/test/t5(name='더조은', height=150)}">/test/t5로 가기</a> 
+		<!-- Controller 주소로 매핑 -->
+		<!-- parameter 전달 : name, height -->
+	</div>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>상품번호</th>
+				<th>상품명</th>
+				<th>상품 상세설명</th>
+				<th>상품 가격</th>
+				<th>상품 등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="itemDTO, status:${itemList}">
+				<td th:if="${status.even}" style="color:#0000ff" th:text="${status.count}"></td>
+				<td th:unless="${status.even}" style="color:#ff0000" th:text="${status.count}"></td>
+				<td th:text="${itemDTO.itemNm}"></td>
+				<td th:text="${itemDTO.itemDetail}"></td>
+				<td th:text="${itemDTO.price}"></td>
+				<td th:text="${itemDTO.regTime}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
