@@ -34,4 +34,8 @@ public class Answer {
 	@JoinColumn(name = "qid")
 	private Question question;
 	
+	// 글쓴이
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private Users users;
 }

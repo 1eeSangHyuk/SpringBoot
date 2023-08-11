@@ -16,8 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tjoeun.entity.Answer;
 import com.tjoeun.entity.Question;
+import com.tjoeun.entity.Users;
 import com.tjoeun.repository.AnswerRepository;
 import com.tjoeun.repository.QuestionRepository;
+import com.tjoeun.service.QuestionService;
+import com.tjoeun.service.UsersService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,10 +31,16 @@ class BoardAppTests {
 	
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private QuestionService questionService;
+	
+	@Autowired
+	private UsersService usersService;
 	
 	@Autowired
 	private AnswerRepository answerRepository;
-
+		
 	@Test
 	@DisplayName("질문 테스트1")
 	void contextLoads() {
@@ -149,5 +158,16 @@ class BoardAppTests {
 		assertEquals(q1.getId(), a1.getQuestion().getId(), "질문글의 답변인지 조회 실패");
 		log.info(">>>>>>>>>>>>>>>>>>>>>>>a1.getQuestion().getId() : "+a1.getQuestion().getId());
 		log.info(">>>>>>>>>>>>>>>>>>>>>>>q1.getId() : "+q1.getId());
+	}
+	
+	@Test
+	@DisplayName("질문글 한꺼번에 올리기")
+	void uploadBoardTest () {
+		for(int i=0; i<500; i++) {
+			String subject = String.format("테스트 게시물 : [%03d]", i);
+			String content = String.format("여기는 테스트 게시글 [%03d] 입니다", i);
+			
+			questionService.save(subject, content, null);
+		}
 	}
 }

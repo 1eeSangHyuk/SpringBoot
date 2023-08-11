@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Getter;
@@ -38,4 +40,9 @@ public class Question {
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL,
 						 orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Answer> answerList = new ArrayList<>();
+	
+	// 글쓴이
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private Users users;
 }

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="ko"
+			xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>layout</title>
 	
 	<!-- Bootstrap CSS -->
   <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}" >
-  
-  <!-- CSS -->
-  <!-- <link rel="stylesheet" th:href="@{/css/layout.css}"> -->
-	
+ 	
 	<!-- jQuery, Popper.js, and Bootstrap JS -->
 	
 	
@@ -19,12 +18,14 @@
 
 </head>
 <body>
-
-	<!-- <div th:replace="fragments/header::header"></div> -->
+	<!-- Bootstrap JS -->
+  <script th:src="@{/bootstrap.min.js}" type="text/javascript"></script>
+  
+  <!-- <div th:replace="fragments/header::header"></div> -->
+	<nav th:replace="~{navbar :: navbar_above}"></nav>
 	
-	<div layout:fragment="content" class="content">
-	
-	</div>
+	<!-- <div layout:fragment="content" class="content"></div> -->
+	<th:block layout:fragment="content"></th:block>
 	
 	<!-- <div th:replace="fragments/footer::footer"></div> -->
 
