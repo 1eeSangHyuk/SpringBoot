@@ -6,36 +6,50 @@
 			layout:decorate="~{layout}">
 
 <div layout:fragment="content" class="container my-3">
-	<h2>질문 리스트</h2>
+	<div class="row my-3">
+		<div class="col-6">
+		<h2>질문 리스트</h2>
+			<a th:href="@{/quesiton/list}"></a>
+		</div>
+		<div class="col-6">
+			<div class="input-group">
+				<input type="text" id="search_keyword" class="form-control" th:value="${keyword}" />
+				<button class="btn btn-outline-secondary" type="button" id="btn_search">검색하기</button>
+			</div>
+		</div>
+	</div>
   <table class="table">
 		<thead>
 			<tr class="text-center">
 				<th>글번호</th>
-				<th>제목</th>
+				<th style="width:50%;">제목</th>
 				<th>작성자</th>
 				<th>등록 일시</th>
 			</tr>
 		</thead>
 		<!-- 최근 작성순 정렬 1 -->
-		<tbody>
+		<!-- <tbody>
       <tr class="text-center" th:each="question, loop : ${paging}">
         <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
         <td class="text-center">
           <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
-          <!-- 댓글 개수 표시 -->
+          댓글 개수 표시
           <span class="text-danger small ms-2" 
                 th:if="${#lists.size(question.answerList) > 0}"
                 th:text="${#lists.size(question.answerList)}">
           </span>
         </td>
-        <td th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"></td>
+       	<td>
+       		<span th:if="${question.users != null}" th:text="${question.users.userName}"></span>
+       		<span th:if="${question.users == null}">더미데이터</span>
+       	</td>
+      	<td th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"></td>
       </tr>
-    </tbody>
+    </tbody> -->
 		<!-- 최근 작성순 정렬 2 -->
-		<!-- <tbody>
-			<tr th:each="question, loop : ${paging}">
+		<tbody>
+			<tr class="text-center" th:each="question, loop : ${paging}">
 				<td th:text="${loop.count}"></td>
-				<td th:text="${question.id}"></td>
 				<td>
 					<a th:href="@{|/question/detail/${question.id}|}" 
 						 th:text="${question.subject}"></a>
@@ -43,10 +57,13 @@
 								th:if="${#lists.size(question.answerList)} > 0" 
 								th:text="|(${#lists.size(question.answerList)})|"></span>
 				</td>
-				<td th:text="${question.users.id}"></td>
+				<td>
+					<span th:if="${question.users != null}" th:text="${question.users.userName}"></span>
+       		<span th:if="${question.users == null}">더미데이터</span>
+				</td>
 				<td th:text="${ #temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 			</tr>
-		</tbody> -->
+		</tbody>
 	</table>
 	
 	<a th:href="@{/question/create}" class="btn btn-primary">질문 등록</a>
@@ -54,12 +71,12 @@
 	<div th:if="${!paging.isEmpty()}">
 		<ul class="pagination justify-content-center">
 			<li class="page_item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${0}|}">
+				<a class="page-link" href="javascript:void(0)" th:data-page="${0}">
 					<span>&laquo;</span>
 				</a>
 			</li>
 			<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${paging.number-1}|}" th:data-page="${paging.number-1}">
+				<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
 					<span>&lt;</span>
 				</a>
 			</li>
@@ -71,19 +88,50 @@
 					th:if="${page >= paging.number-4 and page <= paging.number+4}"
 					th:classappend="${page == paging.number} ? 'active'"
 					class="page-item">
-				<a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}" th:data-page="${page}"></a>
+				<a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
 			</li>
 			<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${paging.number+1}|}" th:data-page="${paging.number+1}">
+				<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
 					<span>&gt;</span>
 				</a>
 			</li>
 			<li class="page_item" th:classappend="${!paging.hasNext} ? 'disabled'">
-				<a class="page-link" th:href="@{|?page=${paging.totalPages-1}|}">
+				<a class="page-link" href="javascript:void(0)" th:data-page="${paging.totalPages-1}">
 					<span>&raquo;</span>
 				</a>
 			</li>
 		</ul>
 	</div>
+	
+	<form th:action="@{/question/list}" method="get" id="searchForm">
+		<input type="hidden" id="keyword" name="keyword" th:value=${keyword}>
+		<input type="hidden" id="page" name="page" th:value=${paging.number}>
+	</form>
 </div>
+<script layout:fragment="script" type="text/javascript">
+	/* 페이지 버튼 눌렀을 때 */
+	const page_elements = document.getElementsByClassName("page-link");
+	console.log(page_elements[0].dataset);
+	Array.from(page_elements).forEach(function(element){
+		element.addEventListener('click', function(){
+			document.getElementById('page').value=this.dataset.page;
+			document.getElementById('searchForm').submit();
+		});
+	});
+	/* 검색 버튼 눌렀을 때 */
+	const btn_search = document.getElementById("btn_search");
+	btn_search.addEventListener('click', function(){
+		document.getElementById('keyword').value = document.getElementById('search_keyword').value;
+		document.getElementById('page').value = 0;
+		document.getElementById('searchForm').submit();
+	});
+	const enter_search = document.getElementById("search_keyword");
+	enter_search.addEventListener('keypress', function(e){
+		if(e.key == 'Enter'){
+			document.getElementById('keyword').value = document.getElementById('search_keyword').value;
+			document.getElementById('page').value = 0;
+			document.getElementById('searchForm').submit();
+		}
+	});
+</script>
 </html>

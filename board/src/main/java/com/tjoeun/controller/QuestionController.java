@@ -5,6 +5,7 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.tjoeun.dto.AnswerFormDTO;
 import com.tjoeun.dto.QuestionFormDTO;
@@ -33,13 +35,17 @@ public class QuestionController {
 	private final QuestionService questionService;
 	private final UsersService usersService;
 	
+	// 검색 -  @RequestParam(value = "keyword", defaultValue = "") String keyword 추가
 	@GetMapping("/list")
-	// @ResponseBody
-	public String list(Model model,
-										 @RequestParam(value = "page", defaultValue = "0") int page) {
-		Page<Question> paging = questionService.findAll(page);
-		model.addAttribute("paging", paging);
-		return "question_list";
+	public String list(Model model, 
+			 @RequestParam(value = "page", defaultValue = "0") int page,
+			 @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+
+	Page<Question> paging = questionService.findAll(page, keyword);
+	model.addAttribute("paging", paging);
+	model.addAttribute("keyword", keyword);
+	
+	return "question_list";
 	}
 	
 	@GetMapping("/detail/{id}")
@@ -60,7 +66,7 @@ public class QuestionController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	public String create1(@Valid QuestionFormDTO questionFormDTO,
+	public String create(@Valid QuestionFormDTO questionFormDTO,
 												BindingResult result,
 												Principal principal) {
 		if(result.hasErrors()) {
@@ -70,4 +76,58 @@ public class QuestionController {
 		questionService.save(questionFormDTO.getSubject() ,questionFormDTO.getContent(), user);
 		return "redirect:/question/list";
 	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/modify/{id}")
+	public String modify(@ModelAttribute QuestionFormDTO questionFormDTO,
+											 @PathVariable Long id, 
+											 Principal principal,
+											 Model model) {
+		Question question = questionService.findById(id);
+		if(!question.getUsers().getUserName().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한 없음");
+		}
+		questionFormDTO.setSubject(question.getSubject());
+		questionFormDTO.setContent(question.getContent());
+		
+		return "question_form";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modify/{id}")
+	public String modify(@Valid QuestionFormDTO questionFormDTO, BindingResult result,
+											 @PathVariable Long id, Principal principal,
+											 Model model) {
+		if(result.hasErrors()) {
+			return "question_form";
+		}
+		Question question = questionService.findById(id);
+		if(!question.getUsers().getUserName().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한 없음");
+		}
+		questionService.modify(question, questionFormDTO.getSubject(), questionFormDTO.getContent());
+		return String.format("redirect:/question/detail/%s", id);
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable Long id, Principal principal) {
+		Question question = questionService.findById(id);
+		if(!question.getUsers().getUserName().equals(principal.getName())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한 없음");
+		}
+		questionService.delete(question);
+		return "redirect:/question/list";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/vote/{id}")
+	public String vote(@PathVariable Long id,
+										 Principal principal) {
+		Question question = questionService.findById(id);
+		Users user = usersService.getUsers(principal.getName());
+		questionService.vote(question, user);
+		return String.format("redirect:/question/detail/%s", question.getId());
+	}
+
 }
