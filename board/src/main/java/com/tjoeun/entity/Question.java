@@ -28,7 +28,7 @@ public class Question {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "qid")
+	@Column(name = "question_id")
 	private Long id;
 	
 	@Column(length = 100)
@@ -54,4 +54,9 @@ public class Question {
 	// 추천 기능
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Users> voter;
+	
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL,
+      			 orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Comment> commentList = new ArrayList<>();
+	
 }

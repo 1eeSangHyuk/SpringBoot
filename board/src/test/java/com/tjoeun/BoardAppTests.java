@@ -19,6 +19,7 @@ import com.tjoeun.entity.Question;
 import com.tjoeun.entity.Users;
 import com.tjoeun.repository.AnswerRepository;
 import com.tjoeun.repository.QuestionRepository;
+import com.tjoeun.repository.UsersRepository;
 import com.tjoeun.service.QuestionService;
 import com.tjoeun.service.UsersService;
 
@@ -37,6 +38,9 @@ class BoardAppTests {
 	
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private UsersRepository usersRepository;
 	
 	@Autowired
 	private AnswerRepository answerRepository;
@@ -163,11 +167,12 @@ class BoardAppTests {
 	@Test
 	@DisplayName("질문글 한꺼번에 올리기")
 	void uploadBoardTest () {
+		Users user = usersRepository.findById((long) 1).orElseThrow(EntityNotFoundException::new);
 		for(int i=0; i<500; i++) {
-			String subject = String.format("테스트 게시물 : [%03d]", i);
-			String content = String.format("여기는 테스트 게시글 [%03d] 입니다", i);
+			String subject = String.format("테스트 게시물 : [%03d]", i+1);
+			String content = String.format("여기는 테스트 게시글 [%03d] 입니다", i+1);
 			
-			questionService.save(subject, content, null);
+			questionService.save(subject, content, user);
 		}
 	}
 }

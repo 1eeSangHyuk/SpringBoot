@@ -50,7 +50,7 @@ public class AnswerController {
 		Users user = usersService.getUsers(principal.getName());
 		Answer answer = answerService.createAnswer(question, answerFormDTO.getContent(), user);
 		
-		return String.format("redirect:/question/detail/%s/#answer_%s", id, answer.getId());
+		return String.format("redirect:/question/detail/%s#answer_%s", id, answer.getId());
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -82,7 +82,7 @@ public class AnswerController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한 없음");
 		}
 		answerService.modify(answer, answerFormDTO.getContent());
-		return String.format("redirect:/question/detail/%s/#answer_%s", answer.getQuestion().getId(), answer.getId());
+		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
 	}
 	
 	@PreAuthorize("isAuthenticated()")
@@ -103,7 +103,7 @@ public class AnswerController {
 		Answer answer = answerService.findById(id);
 		Users user = usersService.getUsers(principal.getName());
 		answerService.vote(answer, user);
-		return String.format("redirect:/question/detail/%s/#answer_%s", answer.getQuestion().getId(), answer.getId());
+		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
 	}
 
 }

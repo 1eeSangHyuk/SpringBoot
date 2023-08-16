@@ -28,7 +28,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long>{
 	// 페이징+검색
 	Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 	
-	@Query("select "
+	@Query(nativeQuery = false, // -> JPQL 
+			value = "select "
 			+ "distinct q "
 			+ "from Question q "
 			+ "left outer join Users u1 on q.users = u1 "
